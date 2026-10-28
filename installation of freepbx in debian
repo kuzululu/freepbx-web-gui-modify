@@ -1,0 +1,77 @@
+# FreePBX 17 Installation on Debian 12
+
+## Requirements
+
+- VMware Workstation
+- Debian 12 (Bookworm), 64-bit
+- 2 CPU cores
+- 4 GB RAM
+- 40 GB disk
+- Internet connection
+
+## Step 1: Update Debian
+
+```bash
+sudo apt update
+sudo apt full-upgrade -y
+sudo reboot
+```
+
+## Step 2: Verify Debian Version
+
+```bash
+cat /etc/os-release
+```
+
+Confirm that the operating system is Debian 12 (Bookworm).
+
+## Step 3: Download the FreePBX Installation Script
+
+```bash
+sudo wget https://github.com/FreePBX/sng_freepbx_debian_install/raw/master/sng_freepbx_debian_install.sh -O /tmp/sng_freepbx_debian_install.sh
+```
+
+## Step 4: Run the Installer
+
+```bash
+sudo bash /tmp/sng_freepbx_debian_install.sh
+```
+
+Wait for the installation to finish. Do not shut down or restart the VM while the installer is running.
+
+## Step 5: Verify the Installation
+
+Check the FreePBX version:
+
+```bash
+sudo fwconsole --version
+```
+
+Check the service status:
+
+```bash
+sudo fwconsole status
+```
+
+## Step 6: Access FreePBX
+
+Find the Debian VM's IP address:
+
+```bash
+ip -br address
+```
+
+Open a browser on a computer that can reach the VM and navigate to:
+
+```text
+http://YOUR_DEBIAN_IP/
+```
+
+Replace `YOUR_DEBIAN_IP` with the actual IP address of your Debian VM.
+
+Complete the initial FreePBX setup in the web interface.
+
+## Official Resources
+
+- FreePBX Downloads: https://www.freepbx.org/downloads/
+- Installation Script: https://github.com/FreePBX/sng_freepbx_debian_install
