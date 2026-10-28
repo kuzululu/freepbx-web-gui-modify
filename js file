@@ -1,0 +1,36 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var nav = document.querySelector('nav.navbar.fixed-top');
+
+    function setCollapsed(state) {
+        document.body.classList.toggle('nav-collapsed', state);
+        try { localStorage.setItem('navCollapsed', state ? '1' : '0'); } catch (e) {}
+    }
+
+    // ☰ button (pambukas)
+    var openBtn = document.createElement('button');
+    openBtn.id = 'navToggle';
+    openBtn.type = 'button';
+    openBtn.className = 'btn btn-secondary';
+    openBtn.innerHTML = '&#9776;';
+    openBtn.title = 'Open menu';
+    openBtn.addEventListener('click', function () { setCollapsed(false); });
+    document.body.appendChild(openBtn);
+
+    // ✕ button (pansara), nasa loob ng navbar
+    if (nav) {
+        var closeBtn = document.createElement('button');
+        closeBtn.id = 'navClose';
+        closeBtn.type = 'button';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.title = 'Close menu';
+        closeBtn.addEventListener('click', function () { setCollapsed(true); });
+        nav.insertBefore(closeBtn, nav.firstChild);
+    }
+
+    // Ibalik ang huling estado
+    try {
+        if (localStorage.getItem('navCollapsed') === '1') {
+            document.body.classList.add('nav-collapsed');
+        }
+    } catch (e) {}
+});
