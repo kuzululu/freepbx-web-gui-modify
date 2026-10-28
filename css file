@@ -1,0 +1,134 @@
+/* ===== LEFT SIDEBAR NAV (desktop lang) ===== */
+@media (min-width: 992px) {
+
+    nav.navbar.fixed-top {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        bottom: 0 !important;
+        width: 250px !important;
+        height: 100vh !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        padding: 10px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        z-index: 1040 !important;
+        transition: transform 0.25s ease;
+    }
+
+    /* Logo sa taas */
+    nav.navbar.fixed-top .navbar-brand {
+        display: block;
+        margin: 0 0 10px 0 !important;
+        text-align: center;
+    }
+    nav.navbar.fixed-top .navbar-brand img {
+        max-height: 60px;
+        height: 60px;
+        width: auto;
+        max-width: 100%;
+    }
+
+    /* Wrapper ng menu: patayo */
+    nav.navbar.fixed-top #fpbx-menu-collapse {
+        margin-top: 3em !important;
+        display: block !important;
+        flex-grow: 0 !important;
+        width: 100%;
+    }
+    nav.navbar.fixed-top .navbar-nav {
+        flex-direction: column !important;
+        width: 100%;
+        margin: 0 !important;
+    }
+    nav.navbar.fixed-top .navbar-nav > li {
+        width: 100%;
+        margin: 0 0 4px 0;
+    }
+    nav.navbar.fixed-top .navbar-nav > li > a.nav-link {
+        display: block;
+        width: 100%;
+        text-align: left;
+    }
+
+    /* Dropdown: bumubukas sa loob ng panel (accordion), hindi lumulutang */
+    nav.navbar.fixed-top .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+        float: none !important;
+        width: 100%;
+        margin: 2px 0 6px 0 !important;
+        padding-left: 8px;
+        border: 0;
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Apply Config, language, search, settings: nasa ilalim ng panel */
+    nav.navbar.fixed-top ul.stuck-right {
+        position: static !important;
+        float: none !important;
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 15px 0 0 0 !important;
+        padding: 10px 0 0 0;
+        list-style: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.35);
+    }
+    nav.navbar.fixed-top ul.stuck-right #button_reload {
+        display: block;
+        width: 100%;
+    }
+
+    /* Puwang sa kaliwa para sa content ng page */
+    body {
+        padding-top: 0 !important;
+        padding-left: 250px !important;
+        transition: padding-left 0.25s ease;
+    }
+
+    /* Collapsed state */
+    body.nav-collapsed { padding-left: 0 !important; }
+    body.nav-collapsed nav.navbar.fixed-top { transform: translateX(-100%); }
+
+    /* Toggle button (☰): lalabas lang kapag sarado ang panel */
+    #navToggle {
+        display: none;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1050;
+    }
+    body.nav-collapsed #navToggle { display: block; }
+
+    /* Close button (✕) sa kanang itaas ng panel */
+    #navClose {
+        position: sticky;
+        top: 0;
+        align-self: flex-end;
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        margin: 0 0 -28px 0;
+        padding: 0;
+        line-height: 26px;
+        text-align: center;
+        font-size: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.85);
+        color: #1a3d6d;
+        cursor: pointer;
+        z-index: 1060;
+    }
+    #navClose:hover { background: #fff; }
+}
+
+/* Itago ang toggle at close button sa mobile; may sariling hamburger ang BS4 */
+@media (max-width: 991.98px) {
+    #navToggle, #navClose { display: none !important; }
+}
