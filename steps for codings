@@ -1,0 +1,125 @@
+Buong Steps: FreePBX Custom Branding
+
+Lahat ng ito ay ginagawa bilang root (su -). Hindi ginagalaw ang core files.
+
+Bahagi 0: Ihanda ang folder (isang beses lang)
+bash
+mkdir -p /var/www/html/admin/assets/custom
+
+Dito ilalagay ang lahat ng sarili mong file (CSS, JS, logo).
+
+Bahagi 1: Palitan ang logo
+Kopyahin ang logo mula sa Downloads:
+bash
+   cp /home/jrgg/Downloads/logo.png /var/www/html/admin/assets/custom/mylogo.png
+
+Palitan ang logo.png ng totoong pangalan ng file.
+2. Ayusin ang permissions:
+
+bash
+   fwconsole chown
+I-set ang path (walang unang slash):
+bash
+   fwconsole setting BRAND_IMAGE_TANGO_LEFT "assets/custom/mylogo.png"
+I-apply:
+bash
+   fwconsole reload
+
+Kung gusto mong palitan din ang logo sa footer at ang favicon:
+
+bash
+fwconsole setting BRAND_IMAGE_FREEPBX_FOOT "assets/custom/footer-logo.png"
+fwconsole setting BRAND_IMAGE_FAVICON "assets/custom/favicon.ico"
+Bahagi 2: Palitan ang pangalan at title
+bash
+# Title sa tab ng browser (title bar)
+fwconsole setting BRAND_TITLE "JRGG PBX"
+
+# Alt text/title ng logo sa navbar
+fwconsole setting BRAND_FREEPBX_ALT_LEFT "JRGG PBX"
+
+# Text sa footer
+fwconsole setting BRAND_FREEPBX_ALT_FOOT "JRGG PBX"
+
+# Link kapag na-click ang logo (opsyonal)
+fwconsole setting BRAND_IMAGE_FREEPBX_LINK_LEFT "http://iyong-website.com"
+
+fwconsole reload
+Bahagi 3: Magdagdag ng custom CSS
+Gawin o i-edit ang file:
+bash
+   nano /var/www/html/admin/assets/custom/custom.css
+Ilagay ang CSS mo, i-save (Ctrl+O, Enter, Ctrl+X).
+Ayusin ang permissions:
+bash
+   fwconsole chown
+I-set (kailangan lang ito sa unang beses):
+bash
+   fwconsole setting BRAND_CSS_CUSTOM "assets/custom/custom.css"
+I-apply:
+bash
+   fwconsole reload
+Bahagi 4: Magdagdag ng custom JS
+Gawin o i-edit ang file:
+bash
+   nano /var/www/html/admin/assets/custom/custom.js
+Ilagay ang JS mo, i-save.
+Permissions:
+bash
+   fwconsole chown
+I-set (isang beses lang):
+bash
+   fwconsole setting BRAND_ALT_JS "assets/custom/custom.js"
+I-apply:
+bash
+   fwconsole reload
+Bahagi 5: Magdagdag ng bagong CSS o JS file
+
+Isang file lang ang tinatanggap ng bawat setting (BRAND_CSS_CUSTOM at BRAND_ALT_JS). Kaya kapag gusto mong mag-dagdag ng pangalawang file, ikabit ito sa una:
+
+Bagong CSS (halimbawa sidebar.css): gawin ang file sa assets/custom/, tapos ilagay sa pinakataas ng custom.css:
+
+css
+@import url("sidebar.css");
+
+Bagong JS (halimbawa extra.js): gawin ang file sa assets/custom/, tapos idagdag sa custom.js:
+
+javascript
+var s = document.createElement('script');
+s.src = 'assets/custom/extra.js';
+document.head.appendChild(s);
+
+Pagkatapos: fwconsole chown, fwconsole reload, Ctrl+F5.
+
+Kailan gagamitin ang chown at reload
+Command	Kailan
+fwconsole chown	Tuwing gagawa, magko-kopya, o mag-e-edit ng file sa assets/custom/, para ma-access ito ng web server
+fwconsole setting ...	Kapag magpapalit ng logo path, pangalan, o title
+fwconsole reload	Pagkatapos ng setting, para ma-apply
+Ctrl+F5 o Incognito	Laging gawin sa browser, dahil naka-cache ang CSS at JS
+
+Kapag CSS o JS lang ang inedit (hindi nagbago ang setting), kadalasan sapat na ang fwconsole chown at Ctrl+F5.
+
+Bahagi 6: I-verify
+bash
+ls -l /var/www/html/admin/assets/custom/
+mysql asterisk -e "select keyword,value from freepbx_settings where keyword like 'BRAND_%';"
+Dapat asterisk asterisk ang owner ng mga file.
+Dapat may laman ang BRAND_CSS_CUSTOM, BRAND_ALT_JS, at BRAND_IMAGE_TANGO_LEFT.
+Sa browser: Ctrl+U at hanapin ang custom.css at custom.js; F12 → Console para sa mga error.
+Pwede ring buksan direkta: http://localhost/admin/assets/custom/custom.css.
+Bahagi 7: Backup
+bash
+mkdir -p /root/backups
+tar czf /root/backups/custom_$(date +%F).tar.gz -C /var/www/html/admin/assets custom
+mysqldump asterisk freepbx_settings --no-create-info --replace \
+  --where="keyword like 'BRAND_%'" > /root/backups/brand_settings_$(date +%F).sql
+Kung may masira
+
+Para ibalik sa default ang GUI nang hindi binubura ang files:
+
+bash
+fwconsole setting BRAND_CSS_CUSTOM ""
+fwconsole setting BRAND_ALT_JS ""
+fwconsole setting BRAND_IMAGE_TANGO_LEFT "images/tango.png"
+fwconsole reload
